@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock with a 12hr/24hr Format Switcher</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="icon" href="resources/digital-clock.png">
+</head>
+<body>
+    <div class="digital-clock">
+        <i class="uil uil-ellipsis-v dot-menu-btn" id="active-menu"></i>
+        <ul class="dot-menu" id="active-menu">
+            <li class="menu-item" id="active-menu">
+                <span class="clock-format-text" id="active-menu">24-Hour Format</span>
+                <div class="format-switch-btn" id="active-menu" data-format="12"></div>
+            </li>
+        </ul>
+        <div class="time">
+            <span class="hours">00</span>
+            <span class="dots">:</span>
+            <span class="minutes">00</span>
+            <div class="right-side">
+                <span class="period">AM/PM</span>
+                <span class="seconds">00</span>
+            </div>
+        </div>
+        <div class="calender">
+            <span class="month-name">Month</span>,
+            <span class="day-name">DAY</span>
+            <span class="day-number">00</span>
+            <span class="year">0000</span>
+        </div>
+    </div>
+
+    <script>
+        //Javascript for Switch Clock format
+        const formatSwitchBtn = document.querySelector(".format-switch-btn");
+
+        formatSwitchBtn.addEventListener("click", () => {
+            formatSwitchBtn.classList.toggle("active");
+
+            var formatValue = formatSwitchBtn.getAttribute("data-format")
+
+            if(formatValue === "12"){
+                formatSwitchBtn.setAttribute("data-format", "24")
+            }
+            else{
+                formatSwitchBtn.setAttribute("data-format", "12")
+            } 
+        });
+
+
+
+
+        //get current time in javascript
+        function Clock(){
+            var today = new Date();
+
+            var hours = today.getHours();
+            var minutes = today.getMinutes();
+            var seconds = today.getSeconds();
+            let period = "AM";
+
+
+            if(hours >= 12){
+                period= "PM";
+            }
+
+            //set the 12hr format
+            var formatValue = formatSwitchBtn.getAttribute("data-format");
+
+            if (formatValue === "12"){  
+              hours = hours > 12 ? hours % 12 : hours;
+            }
+
+            //add 0 for values less than 10
+            if(hours < 10){
+                hours = '0' + hours;
+            }
+
+            if(minutes < 10){
+                minutes = '0' + minutes;
+            }
+
+            if(seconds < 10){
+                seconds = '0' + seconds;
+            }
+            
+            
+            document.querySelector(".hours").innerHTML = hours;
+            document.querySelector(".minutes").innerHTML = minutes;
+            document.querySelector(".seconds").innerHTML = seconds;
+            document.querySelector(".period").innerHTML = period;
+        }
+
+        var updateClock = setInterval(Clock, 1000);
+
+// Get the date IN javaScript
+        var today = new Date();
+        const dayNumber = today.getDate();
+        const year = today.getFullYear();
+        const dayName = today.toLocaleDateString("default", {weekday:"long"});
+        const monthName = today.toLocaleDateString("default", {month:"short"});
+
+        document.querySelector(".month-name").innerHTML = monthName
+        document.querySelector(".day-name").innerHTML = dayName
+        document.querySelector(".day-number").innerHTML = dayNumber
+        document.querySelector(".year").innerHTML = year
+
+ //javascript for dot menu toggle
+const dotmenuBtn = document.querySelector(".dot-menu-btn");
+const dotmenu = document.querySelector(".dot-menu");
+
+dotmenuBtn.addEventListener("click", ()=> {
+    dotmenu.classList.toggle("active");
+});
+
+ document.addEventListener("click", (e) => {
+    if(e.target.id !== "active-menu"){
+        dotmenu.classList.remove("active");    
+    }
+ });
+
+    </script>
+</body>
+</html>
